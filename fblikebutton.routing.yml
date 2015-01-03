@@ -1,0 +1,20 @@
+fblikebutton.main:
+  path: '/admin/config/fblikebutton'
+  requirements:
+    _permission: 'administer fblikebutton'
+
+fblikebutton.dynamic_settings:
+  path: '/admin/config/fblikebutton/dynamic'
+  defaults:
+    _title: 'Dynamic Like button settings'
+    _form: '\Drupal\fblikebutton\Form\DynamicFormSettings'
+  requirements:
+    _permission: 'administer fblikebutton'
+
+fblikebutton.static_settings:
+  path: '/admin/config/fblikebutton/static'
+  defaults:
+    _title: 'Static Like button settings'
+    _form: '\Drupal\fblikebutton\Form\StaticFormSettings'
+  requirements:
+    _permission: 'administer fblikebutton'

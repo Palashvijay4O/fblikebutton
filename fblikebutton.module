@@ -1,0 +1,85 @@
+<?php
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+
+
+/**
+ * Implements of hook_ENTITY_TYPE_view_alter().
+ */
+function fblikebutton_node_view(array &$build, EntityInterface $node, EntityViewDisplayInterface $display, $view_mode) {
+
+  global $base_url;
+  $user = $account = \Drupal::currentUser();
+  $config = \Drupal::config('fblikebutton.dynamic_settings');
+
+  $types = $config->get('node_types');
+  $full_node_display = $config->get('full_node_display');
+  $teaser_display = $config->get('teaser_display');
+  $full = ($view_mode == 'full') ? TRUE : FALSE;
+  $show = ($types[$node->getType()]) && $user->hasPermission('access fblikebutton');
+  $webpage_to_like = \Drupal::url('entity.node.canonical', array('node' => $node->id()), array('absolute' => TRUE));
+  $likebutton_weight = $config->get('weight');
+
+  if ($show) {
+    // Content area
+    if (($view_mode == 'teaser' && $teaser_display == 1) || ($view_mode == 'full' && $full_node_display == 0)) {
+      $build['fblikebutton_field'] = array(
+        '#theme' => 'fblikebutton',
+        '#weight' => $likebutton_weight,
+      );
+    }
+    // Link area
+    if (($view_mode == 'teaser' && $teaser_display == 2) || ($view_mode == 'full' && $full_node_display == 2)) {
+      $build['links']['fblikebutton_field'] = array(
+        //'title' => _fblikebutton_field($webpage_to_like, $conf),
+        '#theme' => 'fblikebutton',
+      );
+    }
+  }
+}
+
+/**
+ * Helper function to generate the configuration array used to generate the like
+ * button.
+ */
+function fblikebutton_conf() {
+
+  // Get current URL
+  $webpage_to_like = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
+  $config = \Drupal::config('fblikebutton.settings');
+  $conf = array(
+    'layout' => $config->get('layout'),
+    'action' => $config->get('action'),
+    'color_scheme' => $config->get('color_scheme'),
+    'show_faces' => $config->get('show_faces'),
+    'font' => $config->get('font'),
+    'height' => $config->get('iframe_height'),
+    'width' => $config->get('iframe_width'),
+    'send' => $config->get('send'),
+    'other_css' => $config->get('iframe_css'),
+    'language' => $config->get('language'),
+    'url' => $webpage_to_like,
+  );
+
+  return $conf;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function fblikebutton_theme() {
+  return array(
+    'fblikebutton' => array(
+      'variables' => fblikebutton_conf(),
+      'template' => 'fblikebutton',
+      'file' => 'fblikebutton.pages.inc'
+    ),
+    'fblikebutton_static' => array(
+      'variables' => fblikebutton_conf('static'),
+      'template' => 'fblikebutton',
+      'file' => 'fblikebutton.pages.inc'
+    ),
+  );
+}
