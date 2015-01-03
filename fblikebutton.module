@@ -9,9 +9,8 @@ use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
  */
 function fblikebutton_node_view(array &$build, EntityInterface $node, EntityViewDisplayInterface $display, $view_mode) {
 
-  global $base_url;
   $user = $account = \Drupal::currentUser();
-  $config = \Drupal::config('fblikebutton.dynamic_settings');
+  $config = \Drupal::config('fblikebutton.settings');
 
   $types = $config->get('node_types');
   $full_node_display = $config->get('full_node_display');
@@ -73,11 +72,6 @@ function fblikebutton_theme() {
   return array(
     'fblikebutton' => array(
       'variables' => fblikebutton_conf(),
-      'template' => 'fblikebutton',
-      'file' => 'fblikebutton.pages.inc'
-    ),
-    'fblikebutton_static' => array(
-      'variables' => fblikebutton_conf('static'),
       'template' => 'fblikebutton',
       'file' => 'fblikebutton.pages.inc'
     ),

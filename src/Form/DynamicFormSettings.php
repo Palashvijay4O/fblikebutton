@@ -163,7 +163,7 @@ class DynamicFormSettings extends ConfigFormBase {
       }
     }
     if (null != $form_state->getValue('fblikebutton_weight')) {
-      if (!is_numeric($form_state->getValue('fblikebutton_bl_weight'))) {
+      if (!is_numeric($form_state->getValue('fblikebutton_weight'))) {
         $form_state->setErrorByName('fblikebutton_bl_weight', $this->t('The weight of the like button must be a number (examples: 50 or -42 or 0).'));
       }
     }
