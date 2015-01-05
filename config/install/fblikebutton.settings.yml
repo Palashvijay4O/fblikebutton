@@ -1,4 +1,5 @@
-node_types: ['article']
+node_types:
+  'article': TRUE
 full_node_display: 0
 teaser_display: 0
 iframe_width: 450
