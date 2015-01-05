@@ -21,18 +21,26 @@ class FblikebuttonBlock extends BlockBase {
   * {@inheritdoc}
   */
   public function build() {
-    return array(
+
+    $values = array(
       '#theme' => 'fblikebutton',
-      '#url' => $this->configuration['block_url'],
       '#layout' => $this->configuration['layout'],
       '#show_faces' => $this->configuration['show_faces'],
       '#action' => $this->configuration['action'],
       '#font' => $this->configuration['font'],
       '#color_scheme' => $this->configuration['color_scheme'],
-      '#iframe_width' => $this->configuration['iframe_width'],
+      '#width' => $this->configuration['iframe_width'],
+      '#height' => $this->configuration['iframe_height'],
       '#other_css' => $this->configuration['iframe_css'],
       '#language' => $this->configuration['language'],
     );
+
+    // If it's not for determined content types
+    if($this->configuration['block_url'] != '<current>') {
+      $values['#url'] = $this->configuration['block_url'];
+    }
+
+    return $values;
   }
 
   /**
@@ -55,7 +63,7 @@ class FblikebuttonBlock extends BlockBase {
       'font' => 'arial',
       'color_scheme' => 'light',
       'iframe_width' => 450,
-      'iframe_height' => 20,
+      'iframe_height' => 40,
       'iframe_css' => NULL,
       'language' => 'en_US',
     );
@@ -134,6 +142,12 @@ class FblikebuttonBlock extends BlockBase {
       '#title' => $this->t('Max-width of the iframe (px)'),
       '#default_value' => $config['iframe_width'],
       '#description' => $this->t('Max-width of the iframe, in pixels. Default is 450.'),
+    );
+    $form['appearance']['iframe_height'] = array(
+      '#type' => 'number',
+      '#title' => $this->t('Height of the iframe (px)'),
+      '#default_value' => $config['iframe_height'],
+      '#description' => $this->t('Height of the iframe, in pixels. Default is 80. <em>Note: lower values may crop the output.</em>'),
     );
     $form['appearance']['iframe_css'] = array(
       '#type' => 'textfield',

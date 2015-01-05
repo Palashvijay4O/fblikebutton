@@ -2,10 +2,26 @@
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
-
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Url;
 
 /**
- * Implements of hook_ENTITY_TYPE_view_alter().
+* Implements hook_help()
+*/
+function fblikebutton_help($route_name, RouteMatchInterface $route_match) {
+  switch($route_name) {
+    case 'fblikebutton.settings':
+      $page_url = Url::fromRoute('block.admin_display');
+      $output = '<p>Configure the dynamic Like button. This Like button will like the URL you\'re visiting. ';
+      $output .= 'You can set the content types on which the button displays, choose to display it in the ';
+      $output .= 'content block or in the links area.</p>';
+      $output .= '<p>You can also configure blocks in the ' . \Drupal::l('Block Layout page', $page_url) .'</p>';
+
+      return t($output);
+  }
+}
+/**
+ * Implements hook_ENTITY_TYPE_view_alter().
  */
 function fblikebutton_node_view(array &$build, EntityInterface $node, EntityViewDisplayInterface $display, $view_mode) {
 
@@ -23,19 +39,34 @@ function fblikebutton_node_view(array &$build, EntityInterface $node, EntityView
   if ($show) {
     // Content area
     if (($view_mode == 'teaser' && $teaser_display == 1) || ($view_mode == 'full' && $full_node_display == 0)) {
+      $url = fblikebutton_get_node_url($node->url());
       $build['fblikebutton_field'] = array(
         '#theme' => 'fblikebutton',
         '#weight' => $likebutton_weight,
+        '#url' => $url,
       );
     }
     // Link area
     if (($view_mode == 'teaser' && $teaser_display == 2) || ($view_mode == 'full' && $full_node_display == 2)) {
+      $url = fblikebutton_get_node_url($node->url());
       $build['links']['fblikebutton_field'] = array(
         //'title' => _fblikebutton_field($webpage_to_like, $conf),
         '#theme' => 'fblikebutton',
+        '#url' => $url,
       );
     }
   }
+}
+
+/**
+* Get the node url to add in the like button
+*
+* Variable in format /node/1
+* @var path
+*/
+function fblikebutton_get_node_url($path) {
+  $url_generator = \Drupal::urlGenerator();
+  return $url_generator->generateFromPath($path, array('absolute' => TRUE));
 }
 
 /**
@@ -43,9 +74,10 @@ function fblikebutton_node_view(array &$build, EntityInterface $node, EntityView
  * button.
  */
 function fblikebutton_conf() {
-
-  // Get current URL
-  $webpage_to_like = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+  // Get current URL.
+  // This will be used in the blocks for content types.
+  $url_generator = \Drupal::urlGenerator();
+  $webpage_to_like = $url_generator->generateFromRoute('<current>', array(), array('absolute' => TRUE));
 
   $config = \Drupal::config('fblikebutton.settings');
   $conf = array(
@@ -77,3 +109,5 @@ function fblikebutton_theme() {
     ),
   );
 }
+
+

@@ -2,7 +2,7 @@ node_types: ['article']
 full_node_display: 0
 teaser_display: 0
 iframe_width: 450
-iframe_height: 20
+iframe_height: 40
 iframe_css: NULL
 layout: 'standard'
 show_faces: TRUE
@@ -11,4 +11,3 @@ font: 'arial'
 color_scheme: 'light'
 weight: 50
 language: 'en_US'
-send: TRUE

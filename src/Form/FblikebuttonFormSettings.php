@@ -1,7 +1,7 @@
 <?php
 
 /**
-* Contains \Drupal\fblikebutton\Form\DynamicFormSettings
+* Contains \Drupal\fblikebutton\Form\FblikebuttonFormSettings
 */
 
 namespace Drupal\fblikebutton\Form;
@@ -10,7 +10,7 @@ use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 
-class DynamicFormSettings extends ConfigFormBase {
+class FblikebuttonFormSettings extends ConfigFormBase {
 
   /**
   * {@inheritdoc}
@@ -26,9 +26,6 @@ class DynamicFormSettings extends ConfigFormBase {
     $fblikebutton_node_options = node_type_get_names();
     $config = $this->config('fblikebutton.settings');
 
-    $form['fblikebutton_dynamic_description'] = array(
-      '#markup' => '<p>' . $this->t('Configure the dynamic Like button. This Like button will like the URL you\'re visiting. You can set the content types on which the button displays, choose to display it in the content block or it\'s own block and set the appearance.') . '</p>',
-    );
     $form['fblikebutton_dynamic_visibility'] = array(
       '#type' => 'details',
       '#title' => $this->t('Visibility settings'),
@@ -41,12 +38,16 @@ class DynamicFormSettings extends ConfigFormBase {
       '#default_value' => $config->get('node_types'),
       '#description' => $this->t('Each of these content types will have the "like" button automatically added to them.'),
     );
+    /**
+    * Follow up #2391289
+    * Blocks don't appear if we configure to show them in determined content types
+    */
     $form['fblikebutton_dynamic_visibility']['fblikebutton_full_node_display'] = array(
       '#type' => 'radios',
       '#title' => $this->t('Where do you want to show the Like button (full node view)?'),
       '#options' => array(
         $this->t('Content area'),
-        $this->t('Own block'),
+        $this->t('Own block (not work yet)'), // Follow up #2391289
         $this->t('Links area')
       ),
       '#default_value' => $config->get('full_node_display'),
@@ -70,7 +71,7 @@ class DynamicFormSettings extends ConfigFormBase {
     );
     $form['fblikebutton_dynamic_appearance']['fblikebutton_iframe_width'] = array(
       '#type' => 'number',
-      '#title' => $this->t('Width of the iframe (px)'),
+      '#title' => $this->t('Max-width of the iframe (px)'),
       '#default_value' => $config->get('iframe_width'),
       '#description' => $this->t('Width of the iframe, in pixels. Default is 450. <em>Note: lower values may crop the output.</em>'),
     );
