@@ -44,3 +44,7 @@ Go to the block layout page and add Facebook Like Button blocks.
 You can configure blocks with your site or facebook fanpage link
 And also add block for determined content types and use "<current>" to establish
 the button for nodes.
+
+GOOGLE CODE-IN
+---------------
+This module was ported as a Google Code-In (GCI) 2014 task by the student gvso. Google Code-in is a contest for pre-university students (e.g., high school and secondary school students ages 13-17) with the goal of encouraging young people to participate in open source. More info about GCI https://developers.google.com/open-source/gci/
