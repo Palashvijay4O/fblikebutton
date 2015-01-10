@@ -1,7 +1,7 @@
 Install and enable Facebook Like Button
 
 1) Move the root folder of fblikebutton to ./modules/ 
-2) Go to http://yoursite/admin/modules and check the option Login Destination in
+2) Go to http://yoursite/admin/modules and check the option Facebook Like Button in
    the package Others
    
    Or use drush
