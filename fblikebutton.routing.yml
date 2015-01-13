@@ -1,5 +1,5 @@
 fblikebutton.settings:
-  path: '/admin/config/fblikebutton/user-interface/fblikebutton'
+  path: '/admin/config/user-interface/fblikebutton'
   defaults:
     _title: 'Facebook Like Button Settings'
     _form: '\Drupal\fblikebutton\Form\FblikebuttonFormSettings'
